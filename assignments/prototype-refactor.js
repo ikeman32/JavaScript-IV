@@ -8,54 +8,82 @@ Prototype Refactor
 
 */
 
-function Game(gameAtrib) {
-    this.createdAt = gameAtrib.createdAt;
-    this.name = gameAtrib.name;
-    this.dimensions = gameAtrib.dimensions
-}
+//old code
+// function Game(gameAtrib) {
+//     this.createdAt = gameAtrib.createdAt;
+//     this.name = gameAtrib.name;
+//     this.dimensions = gameAtrib.dimensions
+// }
 
-Game.prototype.destroy = function() {
-    console.log(`${this.name} was removed from the game.`);
-}
+// Game.prototype.destroy = function() {
+//     console.log(`${this.name} was removed from the game.`);
+// }
 
-/*
-  === CharacterStats ===
-  * healthPoints
-  * takeDamage() // prototype method -> returns the string '<object name> took damage.'
-  * should inherit destroy() from GameObject's prototype
-*/
-function CharacterStats(statsAtrib) {
-    Game.call(this, statsAtrib); //inherits from Game()
-    this.healthPoints = statsAtrib.healthPoints;
-}
-CharacterStats.prototype = Object.create(Game.prototype);
+class Game {
+    constructor(gameAtrib) {
+            this.createdAt = gameAtrib.createdAt;
+            this.name = gameAtrib.name;
+            this.dimensions = gameAtrib.dimensions
+        } //constructor
 
-CharacterStats.prototype.takeDamage = function() {
-    const dmg = this.healthPoints - 2;
-    const msg = `${this.name} took 2 points of damage and now has ${dmg} health points.`;
-    console.log(msg);
-}
+    destroy() {
+            return `${this.name} was removed from the game.`;
+        } //destroy method
+} //Game class
 
-/*
-  === Humanoid (Having an appearance or character resembling that of a human.) ===
-  * team
-  * weapons
-  * language
-  * greet() // prototype method -> returns the string '<object name> offers a greeting in <object language>.'
-  * should inherit destroy() from GameObject through CharacterStats
-  * should inherit takeDamage() from CharacterStats
-*/
-function Humanoid(humanoidAtrib) {
-    CharacterStats.call(this, humanoidAtrib); //inherits from CharacterStats()
-    this.team = humanoidAtrib.team;
-    this.weapons = humanoidAtrib.weapons;
-    this.language = humanoidAtrib.language;
-}
-Humanoid.prototype = Object.create(CharacterStats.prototype);
+//cold code
+// function CharacterStats(statsAtrib) {
+//     Game.call(this, statsAtrib); //inherits from Game()
+//     this.healthPoints = statsAtrib.healthPoints;
+// }
+// CharacterStats.prototype = Object.create(Game.prototype);
 
-Humanoid.prototype.greet = function() {
-    console.log(`Greeting by ${this.name}:`, `Vedui' amin essa naa ${this.name}`);
-}
+// CharacterStats.prototype.takeDamage = function() {
+//     const dmg = this.healthPoints - 2;
+//     const msg = `${this.name} took 2 points of damage and now has ${dmg} health points.`;
+//     console.log(msg);
+// }
+
+class CharacterStats extends Game {
+    constructor(statsAtrib) {
+            super(statsAtrib); //for inheritance
+            this.healthPoints = statsAtrib.healthPoints;
+        } //constructor
+
+    takeDamage() {
+            const dmg = this.healthPoints - 2;
+            const msg = `${this.name} took 2 points of damage and now has ${dmg} health points.`;
+            return msg;
+        } //takeDamage
+} //CharacterStats class
+
+//old code
+// function Humanoid(humanoidAtrib) {
+//     CharacterStats.call(this, humanoidAtrib); //inherits from CharacterStats()
+//     this.team = humanoidAtrib.team;
+//     this.weapons = humanoidAtrib.weapons;
+//     this.language = humanoidAtrib.language;
+// }
+// Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+// Humanoid.prototype.greet = function() {
+//     console.log(`Greeting by ${this.name}:`, `Vedui' amin essa naa ${this.name}`);
+// }
+
+
+//new code
+class Humanoid extends CharacterStats {
+    constructor(humanoidAtrib) {
+            super(humanoidAtrib); //for inheritance
+            this.team = humanoidAtrib.team;
+            this.weapons = humanoidAtrib.weapons;
+            this.language = humanoidAtrib.language;
+        } //constructor
+
+    greet() {
+            return `Greeting by ${this.name}:`, `Vedui' amin essa naa ${this.name}`;
+        } //greet
+} //Humanoid class
 
 /*
  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -116,6 +144,7 @@ const archer = new Humanoid({
     language: 'Elvish',
 });
 
+console.log("This is the exact same out put as yesterday but only using classes");
 console.log(`${mage.name} was create on:`, mage.createdAt); // Today's date
 console.log(`${archer.name}'s dimensions are:`, archer.dimensions); // { length: 1, width: 2, height: 4 }
 console.log(`${swordsman.name} health points`, swordsman.healthPoints); // 15
