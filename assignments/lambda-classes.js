@@ -4,12 +4,7 @@ class School {
     constructor(school) {
         this.schoolName = school.schoolName;
     }
-    gradeStudent() {
 
-    }
-    intialGrade(grade) {
-        return grade;
-    }
 }
 
 class Person extends School {
@@ -49,6 +44,38 @@ class Instructor extends Person {
     grade(student, subject) {
             return `${student} recieves a perfect score on ${subject}!`;
         } //grade
+    gradeStudent(student, modifier) {
+        let newGrade = 0;
+        switch (student.name) {
+            case student.name:
+                if (modifier === '+') {
+                    newGrade = Math.round(Math.random() * (6 - 1) + 1);
+                    student.classGrade += newGrade;
+
+                } else if (modifier === '-') {
+                    newGrade =
+                        student.classGrade += Math.round((Math.random() * (6 - 1) + 1) * -1);
+                } else {
+                    return 'invalid entry';
+                }
+
+                break;
+            default:
+                return 'Student not found.'
+        }
+        return `${this.name} has adjusted ${student.name}'s grade by ${newGrade} points.`
+    }
+    graduated(student) {
+        while (student.classGrade < 70) {
+            student.classGrade += Math.round(Math.random() * (6 - 1) + 1);
+            console.log(`${student.name}'s has been adjusted and the new grade is ${student.classGrade}`);
+            if (student.classGrade < 70) {
+                console.log(`${student.name}'s still too low adjusting grade`);
+            } else {
+                return student.graduate();
+            }
+        }
+    }
 } //Instructor calss
 
 class Student extends Person {
@@ -71,6 +98,14 @@ class Student extends Person {
     sprintChallenge(subject) {
             return `${this.name} has begun sprint challenge for ${subject}.`
         } //sprintChallenge
+
+    graduate() {
+        if (this.classGrade >= 70) {
+            return `${this.name} has graduated with a grade of ${this.classGrade}!`
+        } else {
+            return `We're sory ${this.name} you are unable to graduate with a score of ${this.classGrade} have your instructor increase your grade.`
+        }
+    }
 } //Student class
 
 
@@ -88,6 +123,39 @@ class ProjectManager extends Person {
     debugsCode(student, subject) {
             return `${this.name} debugs ${student}'s code on ${subject}`;
         } //debugsCode
+
+    gradeStudent(student, modifier) {
+        let newGrade = 0;
+        switch (student.name) {
+            case student.name:
+                if (modifier === '+') {
+                    newGrade = Math.round(Math.random() * (6 - 1) + 1);
+                    student.classGrade += newGrade;
+
+                } else if (modifier === '-') {
+                    newGrade =
+                        student.classGrade += Math.round((Math.random() * (6 - 1) + 1) * -1);
+                } else {
+                    return 'invalid entry';
+                }
+
+                break;
+            default:
+                return 'Student not found.'
+        }
+        return `${this.name} has adjusted ${student.name}'s grade by ${newGrade} points.`
+    }
+    graduated(student) {
+        while (student.classGrade < 70) {
+            student.classGrade += Math.round(Math.random() * (6 - 1) + 1);
+            console.log(`${student.name}'s has been adjusted and the new grade is ${student.classGrade}`);
+            if (student.classGrade < 70) {
+                console.log(`${student.name}'s still too low adjusting grade`);
+            } else {
+                return student.graduate();
+            }
+        }
+    }
 } //ProjectManager
 
 const fred = new Instructor({
@@ -100,7 +168,6 @@ const fred = new Instructor({
     catchPhrase: `Don't forget the homies`
 });
 
-let myGrade = lambda.intialGrade(75);
 
 const david = new Student({
 
@@ -110,7 +177,7 @@ const david = new Student({
     schoolName: lambda.schoolName,
     previousBackground: 'US Army Veteran',
     className: 'WEB24',
-    classGrade: myGrade,
+    classGrade: Math.round(Math.random() * (100 - 1) + 1),
     favSubjects: ['Web-Dev', 'Programming', 'Computers']
 });
 
@@ -135,3 +202,7 @@ console.log(gab.speak());
 console.log(gab.standUp('#web24'));
 console.log(gab.debugsCode(david.name, 'Javascript'));
 console.log(`${david.name}'s grade:`, david.classGrade);
+console.log(fred.gradeStudent(david, '+'));
+console.log(`David's new grade is`, david.classGrade);
+console.log(david.graduate());
+console.log(fred.graduated(david));
